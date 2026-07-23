@@ -44,6 +44,59 @@
   function fmtGHS(n) { return 'GHS ' + Math.round(n).toLocaleString(); }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
+  /* ---------- WhatsApp helpers ----------
+     Everything the owner sends a client goes out through WhatsApp, because
+     that is where her clients already are. We build the message text here
+     and hand it to wa.me — no backend, no app to learn. */
+  var SALON_NAME = 'KARIL HAIR & BEAUTY LOUNGE';
+  var SALON_LINE = 'Greater Accra  |  054 183 4750';
+
+  // 024 555 1201 -> 233245551201
+  function waNumber(phone) {
+    var n = String(phone || '').replace(/[^0-9]/g, '');
+    if (n.indexOf('233') === 0) return n;
+    if (n.charAt(0) === '0') return '233' + n.slice(1);
+    return n;
+  }
+  function waSend(phone, text) {
+    var num = waNumber(phone);
+    var url = 'https://wa.me/' + (num || '') + '?text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener');
+  }
+  function money(n) { return 'GHS ' + Math.round(n).toLocaleString(); }
+
+  function receiptText(b) {
+    var balance = b.amount - b.deposit;
+    return '*' + SALON_NAME + '*\n' + SALON_LINE + '\n' +
+      '--------------------------------\n' +
+      '*RECEIPT*  ' + b.id + '\n' +
+      'Date: ' + pretty(b.date) + '\n\n' +
+      'Client:  ' + b.client + '\n' +
+      'Service: ' + b.type + (b.pkg && b.pkg !== 'Single Service' ? '  (' + b.pkg + ')' : '') + '\n' +
+      'Stylist: ' + b.venue + '\n' +
+      '--------------------------------\n' +
+      'Total:    ' + money(b.amount) + '\n' +
+      'Paid:     ' + money(b.deposit) + '\n' +
+      (balance > 0 ? 'Balance:  ' + money(balance) + '\n' : '*PAID IN FULL*\n') +
+      '--------------------------------\n' +
+      'Thank you for choosing Karil.\n' +
+      'We cannot wait to see you again.';
+  }
+
+  function reminderText(b) {
+    var balance = b.amount - b.deposit;
+    var first = String(b.client || '').split(' ')[0];
+    return 'Hi ' + first + ',\n\n' +
+      'A friendly reminder of your appointment at *Karil Hair & Beauty Lounge*:\n\n' +
+      'Date:    ' + pretty(b.date) + '\n' +
+      'Service: ' + b.type + '\n' +
+      'Stylist: ' + b.venue + '\n' +
+      (balance > 0 ? 'Balance due: ' + money(balance) + '\n' : '') +
+      '\nPlease come with clean, detangled hair if you are booked for braids or an install.\n' +
+      'Reply here if you need to move your time.';
+  }
+
+
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   function d(offsetDays) {
@@ -228,11 +281,17 @@
       return diff >= 0 && diff <= 7 && b.status !== 'Cancelled';
     }).length;
 
+    // Money clients still owe — the number every salon owner wants first.
+    var owed = BOOKINGS.filter(function (b) { return b.status !== 'Cancelled'; })
+      .reduce(function (sum, b) { return sum + Math.max(0, b.amount - b.deposit); }, 0);
+
     var els = {
       'stat-bookings': monthBookings.length,
       'stat-quotes': pendingQuotes,
       'stat-week': weekEvents
     };
+    var owedEl = document.getElementById('stat-owed');
+    if (owedEl) animateCount(owedEl, owed, 'GHS ');
     Object.keys(els).forEach(function (id) {
       var el = document.getElementById(id);
       if (el) animateCount(el, els[id]);
@@ -404,13 +463,45 @@
         ['Pending', 'Confirmed', 'In Progress', 'Completed', 'Cancelled'].map(function (s) {
           return '<option' + (s === b.status ? ' selected' : '') + '>' + s + '</option>';
         }).join('') +
-        '</select></div>';
+        '</select></div>' +
+        '<div class="drawer-actions">' +
+          '<button class="a-btn a-btn--gold" id="dr-receipt">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke-linecap="round"/></svg>' +
+            'Send Receipt</button>' +
+          '<button class="a-btn a-btn--ghost" id="dr-remind">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a6 6 0 016 6v4l2 3H4l2-3V9a6 6 0 016-6z" stroke-linejoin="round"/><path d="M10 19a2 2 0 004 0" stroke-linecap="round"/></svg>' +
+            'Send Reminder</button>' +
+          (b.amount - b.deposit > 0
+            ? '<button class="a-btn a-btn--ghost" id="dr-paid">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+              'Mark Fully Paid</button>'
+            : '') +
+        '</div>' +
+        '<p class="drawer-hint">Receipts and reminders open WhatsApp with the message already written — just press send.</p>';
       drawerBody.querySelector('#drawer-status').addEventListener('change', function (e) {
         b.status = e.target.value;
         renderBookings();
         toast('Status updated to "' + b.status + '"');
         openBookingDrawer(idx);
       });
+      drawerBody.querySelector('#dr-receipt').addEventListener('click', function () {
+        waSend(b.phone, receiptText(b));
+        toast('Receipt ready in WhatsApp');
+      });
+      drawerBody.querySelector('#dr-remind').addEventListener('click', function () {
+        waSend(b.phone, reminderText(b));
+        toast('Reminder ready in WhatsApp');
+      });
+      var paidBtn = drawerBody.querySelector('#dr-paid');
+      if (paidBtn) {
+        paidBtn.addEventListener('click', function () {
+          b.deposit = b.amount;
+          if (b.status !== 'Cancelled') b.status = 'Completed';
+          renderBookings();
+          toast(b.client + ' marked as fully paid');
+          openBookingDrawer(idx);
+        });
+      }
       drawer.classList.add('is-open');
       backdrop.classList.add('is-open');
     }
@@ -495,6 +586,25 @@
       if ((el = document.getElementById('inv-total'))) el.textContent = totals.items.toLocaleString();
       if ((el = document.getElementById('inv-out'))) el.textContent = totals.out.toLocaleString();
       if ((el = document.getElementById('inv-low'))) el.textContent = totals.low;
+
+      // "Order these" — one tap turns the low-stock list into a WhatsApp
+      // message the owner can forward straight to her supplier.
+      var restockBtn = document.getElementById('restock-list');
+      if (restockBtn && !restockBtn._wired) {
+        restockBtn._wired = true;
+        restockBtn.addEventListener('click', function () {
+          var low = INVENTORY.filter(function (i) { return (i.total - i.out) <= i.total * 0.2; });
+          if (!low.length) { toast('Nothing is running low right now'); return; }
+          var msg = '*KARIL — RESTOCK LIST*\n' + pretty(new Date()) + '\n' +
+            '--------------------------------\n' +
+            low.map(function (i) {
+              return '- ' + i.name + '  (' + (i.total - i.out) + ' left of ' + i.total + ')';
+            }).join('\n') +
+            '\n--------------------------------\nPlease quote me for these. Thank you.';
+          window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+          toast(low.length + ' items ready to send');
+        });
+      }
     }
 
     document.querySelectorAll('[data-inv-cat]').forEach(function (btn) {

@@ -1359,3 +1359,84 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height
     -webkit-text-fill-color: var(--gold-pale) !important;
   }
 }
+
+/* ============================================================
+   SALON LAYER — mobile action bar, open-now pill, softer cards.
+   Added because this site is viewed mostly on a phone, and a
+   salon lives on "call me / message me / book me".
+   ============================================================ */
+
+/* ---------- Sticky mobile action bar ---------- */
+.action-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 1200;
+  display: none; grid-template-columns: 1fr 1fr 1.3fr;
+  gap: 1px; padding: 0.5rem 0.6rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  background: rgba(36, 24, 18, 0.94);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(229, 205, 178, 0.22);
+  box-shadow: 0 -10px 30px -12px rgba(20, 16, 13, 0.6);
+}
+.action-bar a {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.25rem; padding: 0.6rem 0.3rem; border-radius: 12px;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--champagne); min-height: 54px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.action-bar a svg { width: 19px; height: 19px; }
+.action-bar a:active { background: rgba(229, 205, 178, 0.14); }
+.action-bar .ab-book {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  color: var(--espresso-deep);
+}
+.action-bar .ab-wa svg { color: #25D366; }
+
+@media (max-width: 640px) {
+  .action-bar { display: grid; }
+  /* The bar replaces the floating buttons on phones so nothing overlaps. */
+  .wa-float { display: none; }
+  .chat-fab { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); width: 50px; height: 50px; }
+  .chat-window { bottom: calc(134px + env(safe-area-inset-bottom, 0px)); }
+  body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+  .site-footer { padding-bottom: 1.5rem; }
+}
+
+/* ---------- "Open now" pill ---------- */
+.open-pill {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.3rem 0.75rem; border-radius: 999px;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  background: rgba(229, 205, 178, 0.14); border: 1px solid rgba(229, 205, 178, 0.3);
+  color: var(--champagne);
+}
+.open-pill .dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #58C27D; flex: none;
+  box-shadow: 0 0 0 0 rgba(88, 194, 125, 0.6);
+  animation: open-ping 2.4s ease-out infinite;
+}
+.open-pill.is-closed .dot { background: var(--stone); animation: none; }
+@keyframes open-ping {
+  0%   { box-shadow: 0 0 0 0 rgba(88, 194, 125, 0.55); }
+  100% { box-shadow: 0 0 0 9px rgba(88, 194, 125, 0); }
+}
+.hero-meta-inner .open-pill { margin: 0; }
+
+/* ---------- Softer, more spa-like surfaces ---------- */
+.svc-card, .pkg-card, .gallery-item, .contact-card, .value-card, .team-photo {
+  border-radius: 20px;
+}
+.svc-card { box-shadow: 0 20px 45px -24px rgba(59, 42, 33, 0.45); }
+.svc-card:hover { box-shadow: 0 32px 60px -26px rgba(59, 42, 33, 0.55); }
+
+/* ---------- Mobile reading comfort ---------- */
+@media (max-width: 640px) {
+  .section-title { line-height: 1.18; }
+  .svc-list { gap: 0.55rem; }
+  .svc-list li { font-size: 0.95rem; }
+  .pkg-card { padding-inline: 1.4rem; }
+  .builder-opt { align-items: flex-start; }
+  .builder-opt-price { white-space: nowrap; }
+  .check-pill { font-size: 0.9rem; }
+  .testimonial-quote { font-size: 1rem; }
+  .breadcrumb { font-size: 0.72rem; }
+}

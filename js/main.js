@@ -232,6 +232,39 @@
     document.body.appendChild(wa);
   }
 
+  /* ---------- Sticky mobile action bar (phones only) ----------
+     Call, WhatsApp and Book, always one thumb away. Injected here so
+     every page gets it without touching the markup. */
+  if (!document.querySelector('.action-bar')) {
+    var bar = document.createElement('nav');
+    bar.className = 'action-bar';
+    bar.setAttribute('aria-label', 'Quick actions');
+    bar.innerHTML =
+      '<a href="tel:+233541834750" aria-label="Call Karil">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 4h4l2 5-2.5 1.5c1 2.3 2.7 4 5 5L15 13l5 2v4a2 2 0 01-2 2C9.7 20.5 3.5 14.3 3 6a2 2 0 012-2z" stroke-linejoin="round"/></svg>' +
+        '<span>Call</span></a>' +
+      '<a class="ab-wa" href="https://wa.me/233541834750?text=' +
+        encodeURIComponent('Hello Karil! I would like to book an appointment.') +
+        '" target="_blank" rel="noopener" aria-label="WhatsApp Karil">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.8 1-1 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-1-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 22h-.01a9.87 9.87 0 01-5-1.4l-.4-.2-3.7 1 1-3.7-.2-.4A9.9 9.9 0 1112 22z"/></svg>' +
+        '<span>WhatsApp</span></a>' +
+      '<a class="ab-book" href="./contact.html" aria-label="Book an appointment">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M8 3v4m8-4v4M3 10h18" stroke-linecap="round"/></svg>' +
+        '<span>Book</span></a>';
+    document.body.appendChild(bar);
+  }
+
+  /* ---------- "Open now" pill (Mon-Sun, 8am-7pm) ---------- */
+  document.querySelectorAll('[data-open-pill]').forEach(function (host) {
+    var now = new Date();
+    var open = now.getHours() >= 8 && now.getHours() < 19;
+    var pill = document.createElement('span');
+    pill.className = 'open-pill' + (open ? '' : ' is-closed');
+    pill.innerHTML = '<span class="dot"></span>' +
+      (open ? 'Open now &middot; until 7pm' : 'Closed &middot; opens 8am');
+    host.appendChild(pill);
+  });
+
   /* ---------- Newsletter (demo submit) ---------- */
   document.querySelectorAll('.newsletter-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {

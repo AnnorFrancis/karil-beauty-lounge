@@ -391,3 +391,19 @@ input, select, textarea { font-family: inherit; font-size: 0.92rem; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+
+/* ---------- Drawer quick actions (receipt / reminder / paid) ---------- */
+.drawer-actions {
+  display: grid; gap: 0.6rem; margin-top: 1.4rem;
+  padding-top: 1.2rem; border-top: 1px solid var(--a-border);
+}
+.drawer-actions .a-btn { width: 100%; justify-content: center; }
+.drawer-hint {
+  margin-top: 0.8rem; font-size: 0.78rem; line-height: 1.5;
+  color: var(--a-ink-soft); text-align: center;
+}
+@media (min-width: 560px) {
+  .drawer-actions { grid-template-columns: 1fr 1fr; }
+  .drawer-actions .a-btn:first-child { grid-column: 1 / -1; }
+}
