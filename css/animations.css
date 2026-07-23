@@ -1,0 +1,139 @@
+/* ============================================================
+   GEORAT ARCHITECTURAL & CONSTRUCTION — Animation Keyframes & Motion Utilities
+   ============================================================ */
+
+/* Preloader mark draw */
+@keyframes draw-mark {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Generic entrance */
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(0.6); }
+  70%  { transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Hero slideshow Ken Burns */
+@keyframes ken-burns {
+  from { transform: scale(1) translate(0, 0); }
+  to   { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+
+/* Scroll cue */
+@keyframes cue-drip {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  45%  { transform: scaleY(1); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* Marquee */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* WhatsApp pulse ring */
+@keyframes wa-ring {
+  0%   { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.65); opacity: 0; }
+}
+
+/* Small pulsing dot (AI badges, status) */
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.35); opacity: 0.55; }
+}
+
+/* Chat message entrance */
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Typing indicator */
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30%           { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Floating badge */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-12px) rotate(2deg); }
+}
+
+/* Gold shimmer text (used on featured labels) */
+@keyframes shimmer-text {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+.shimmer-gold {
+  background: linear-gradient(100deg, var(--gold) 20%, var(--gold-pale) 40%, #F7E8C0 50%, var(--gold-pale) 60%, var(--gold) 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: shimmer-text 3.5s linear infinite;
+}
+
+/* Skeleton loading shimmer */
+@keyframes skeleton-sweep {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(100deg, rgba(245, 231, 216, 0.4) 30%, rgba(255, 250, 245, 0.9) 50%, rgba(245, 231, 216, 0.4) 70%);
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.6s linear infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Hero letter reveal (JS splits into .char spans) */
+.hero-title .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.9em) rotate(4deg);
+  animation: char-rise 0.9s var(--ease-luxe) forwards;
+}
+@keyframes char-rise {
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+/* Petal spin for decorative marks */
+@keyframes petal-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spin-slow { animation: petal-spin 26s linear infinite; transform-origin: center; }
+
+/* Gallery FLIP transition helpers (applied by gallery.js) */
+.gallery-item.flip-animating { transition: transform 0.55s var(--ease-luxe), opacity 0.45s ease; }
+.gallery-item.flip-enter { opacity: 0; transform: scale(0.86); }
+.gallery-item.flip-enter-active { opacity: 1; transform: scale(1); transition: transform 0.55s var(--ease-luxe), opacity 0.45s ease; }
+.gallery-item.flip-exit { opacity: 0; transform: scale(0.86); transition: transform 0.4s var(--ease-luxe), opacity 0.35s ease; }
+
+/* Count-up numbers get a soft glow as they land */
+.stat-num.is-counted { animation: stat-glow 1.1s var(--ease-out); }
+@keyframes stat-glow {
+  0%   { text-shadow: 0 0 0 rgba(200, 155, 106, 0); }
+  45%  { text-shadow: 0 0 34px rgba(200, 155, 106, 0.65); }
+  100% { text-shadow: 0 0 0 rgba(200, 155, 106, 0); }
+}
+
+/* Page transition veil */
+.page-veil {
+  position: fixed; inset: 0; z-index: 3500; pointer-events: none;
+  background: var(--espresso-deep);
+  transform: scaleY(0); transform-origin: bottom;
+}
+.page-veil.is-leaving { animation: veil-up 0.55s var(--ease-luxe) forwards; }
+@keyframes veil-up {
+  from { transform: scaleY(0); transform-origin: bottom; }
+  to   { transform: scaleY(1); transform-origin: bottom; }
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products & Stock — Karil Admin</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script>try{var t=localStorage.getItem('khb-admin-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body class="admin" data-page="inventory">
+
+<div class="admin-shell">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M15 9.5c-6.5 7-6.5 22 0 29.5" stroke-linecap="round"/>
+        <path d="M23.5 6c-8.5 8.5-8.5 27.5 0 36" stroke-linecap="round"/>
+        <path d="M32 10c-5.5 6.5-5.5 21 0 27.5" stroke-linecap="round"/>
+        <path d="M38.5 11l1.3 3.4 3.4 1.3-3.4 1.3-1.3 3.4-1.3-3.4-3.4-1.3 3.4-1.3z" fill="currentColor" stroke="none"/>
+      </svg>
+      <div>
+        <div class="admin-logo-name">Karil</div>
+        <div class="admin-logo-tag">Admin Suite</div>
+      </div>
+    </div>
+    <nav class="admin-nav" aria-label="Admin">
+      <div class="admin-nav-label">Manage</div>
+      <a href="./dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Today</a>
+      <a href="./bookings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4m8-4v4M3 10h18" stroke-linecap="round"/></svg>Appointments</a>
+      <a href="./inventory.html" class="is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.5 8.5L12 13l8.5-4.5M12 13v8"/></svg>Products & Stock</a>
+      <a href="./clients.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.2 3.4-5 6.5-5s5.7 1.8 6.5 5" stroke-linecap="round"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 15c2.6.2 4.4 1.7 5 4.5" stroke-linecap="round"/></svg>Clients</a>
+      <a href="./analytics.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2" stroke-linecap="round"/></svg>Earnings</a>
+    </nav>
+    <div class="admin-sidebar-foot">
+      <button class="theme-toggle" type="button">
+        <span>Dark mode</span>
+        <span class="track"><span class="thumb"></span></span>
+      </button>
+      <a class="back-to-site" href="../index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m6-6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        View website
+      </a>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop"></div>
+
+  <!-- Main -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg></button>
+      <div class="topbar-title">
+        <h1>Products & Stock</h1>
+        <p>What you have, what is running low</p>
+      </div>
+      <div class="topbar-spacer"></div>
+      <button class="a-btn a-btn--gold" id="add-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+        Add Item
+      </button>
+      <div class="topbar-avatar">K</div>
+    </header>
+
+    <main class="admin-content">
+
+      <!-- Summary -->
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <span class="stat-card-label">Total units</span>
+            <span class="stat-card-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.5 8.5L12 13l8.5-4.5M12 13v8"/></svg></span>
+          </div>
+          <div class="stat-card-value" id="inv-total">0</div>
+          <div class="stat-card-delta up">Across all categories</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <span class="stat-card-label">In use right now</span>
+            <span class="stat-card-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5" stroke-linejoin="round"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg></span>
+          </div>
+          <div class="stat-card-value" id="inv-out">0</div>
+          <div class="stat-card-delta up">Being used on clients today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-head">
+            <span class="stat-card-label">Need to restock</span>
+            <span class="stat-card-icon wine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4l9 16H3l9-16z" stroke-linejoin="round"/><path d="M12 10v4m0 3v.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="stat-card-value" id="inv-low">0</div>
+          <div class="stat-card-delta down">Order these this week</div>
+        </div>
+      </div>
+
+      <!-- Category filter -->
+      <div class="panel">
+        <div class="filter-row">
+          <button class="a-btn a-btn--gold a-btn--sm" data-inv-cat="all">All</button>
+          <button class="a-btn a-btn--ghost a-btn--sm" data-inv-cat="Hair">Hair</button>
+          <button class="a-btn a-btn--ghost a-btn--sm" data-inv-cat="Nails">Nails</button>
+          <button class="a-btn a-btn--ghost a-btn--sm" data-inv-cat="Lashes &amp; Brows">Lashes &amp; Brows</button>
+          <button class="a-btn a-btn--ghost a-btn--sm" data-inv-cat="Skin">Skin</button>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="inv-grid" id="inv-grid"></div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Add item drawer -->
+<div class="a-modal-backdrop" id="drawer-backdrop"></div>
+<aside class="a-drawer" id="inv-drawer" role="dialog" aria-label="Add inventory item">
+  <div class="a-drawer-head">
+    <h2>Add Inventory Item</h2>
+    <button class="a-drawer-close" id="drawer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="a-drawer-body">
+    <div class="a-field"><label>Item name</label><input class="a-input" id="ni-name" placeholder="e.g. Braiding Hair (packs)"></div>
+    <div class="a-field"><label>Category</label>
+      <select class="a-select" id="ni-cat">
+        <option>Hair</option><option>Nails</option>
+        <option>Lashes &amp; Brows</option><option>Skin</option>
+      </select>
+    </div>
+    <div class="a-field"><label>Total quantity</label><input class="a-input" type="number" id="ni-total" placeholder="100" min="1"></div>
+    <div class="a-field"><label>Condition</label>
+      <select class="a-select" id="ni-cond">
+        <option>Excellent</option><option>Good</option><option>Fair</option>
+      </select>
+    </div>
+    <button class="a-btn a-btn--gold" id="inv-save" style="margin-top:0.4rem;">Save Item</button>
+  </div>
+</aside>
+
+<script src="../js/admin.js" defer></script>
+</body>
+</html>

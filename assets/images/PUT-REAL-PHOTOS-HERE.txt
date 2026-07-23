@@ -1,0 +1,7 @@
+Drop Shekinah's real event photos in this folder later.
+
+The demo currently uses Unsplash placeholder URLs directly in the HTML.
+To switch to real photos:
+  1. Save images here (webp or jpg, ~1200px wide is plenty)
+  2. Replace the https://images.unsplash.com/... URLs in the HTML files
+     with ./assets/images/your-photo.webp (or ../assets/images/... from /admin)
