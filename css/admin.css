@@ -1,5 +1,5 @@
 /* ============================================================
-   GEORAT ARCHITECTURAL & CONSTRUCTION — Admin Dashboard Stylesheet
+   KARIL HAIR & BEAUTY LOUNGE — Admin Dashboard Stylesheet
    Clean, modern management UI · dark sidebar · gold accent
    ============================================================ */
 
@@ -406,4 +406,134 @@ input, select, textarea { font-family: inherit; font-size: 0.92rem; }
 @media (min-width: 560px) {
   .drawer-actions { grid-template-columns: 1fr 1fr; }
   .drawer-actions .a-btn:first-child { grid-column: 1 / -1; }
+}
+
+/* ============================================================
+   SIMPLE SALON MANAGER — dashboard tiles, chips, staff cards,
+   forms and money colours. Built for one-tap, plain-language use.
+   ============================================================ */
+
+/* ---------- Dashboard: one-line summary + big tiles ---------- */
+.dash-hello {
+  font-size: 1.02rem; color: var(--a-ink-soft); margin-bottom: 1.4rem; line-height: 1.6;
+}
+.dash-hello strong { color: var(--a-ink); }
+.tile-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}
+.tile {
+  position: relative; display: flex; flex-direction: column; gap: 0.55rem;
+  min-height: 148px; padding: 1.35rem 1.3rem;
+  background: var(--a-surface); border: 1px solid var(--a-border);
+  border-radius: 18px; box-shadow: var(--a-shadow);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(46, 33, 27, 0.28); border-color: var(--a-gold); }
+.tile:active { transform: translateY(-1px); }
+.tile-ico {
+  width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+  background: linear-gradient(135deg, rgba(169,113,66,0.14), rgba(200,155,106,0.14)); color: var(--a-gold);
+}
+.tile-ico svg { width: 24px; height: 24px; }
+.tile-label { font-size: 1.05rem; font-weight: 700; color: var(--a-ink); margin-top: auto; }
+.tile-sub { font-size: 0.82rem; color: var(--a-ink-soft); }
+.tile-count { font-size: 1.5rem; font-weight: 800; color: var(--a-gold); font-family: var(--a-display); line-height: 1; }
+.tile--primary {
+  background: linear-gradient(150deg, var(--a-sidebar), var(--a-sidebar-deep)); border-color: transparent;
+}
+.tile--primary .tile-label { color: #FFF6EC; }
+.tile--primary .tile-sub { color: rgba(255, 246, 236, 0.7); }
+.tile--primary .tile-ico { background: rgba(255, 246, 236, 0.14); color: var(--a-gold-light); }
+
+/* ---------- Chips (tab-style filters) ---------- */
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+.chip-row--big { margin-bottom: 1.2rem; }
+.a-chip {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer;
+  font-size: 0.83rem; font-weight: 700; color: var(--a-ink-soft);
+  background: var(--a-surface); border: 1px solid var(--a-border);
+  transition: all 0.2s ease;
+}
+.a-chip:hover { border-color: var(--a-gold); color: var(--a-gold); }
+.a-chip.is-active { background: var(--a-gold); border-color: var(--a-gold); color: #fff; }
+.chip-row--big .a-chip { padding: 0.62rem 1.4rem; font-size: 0.9rem; }
+.chip-badge {
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  display: inline-grid; place-items: center; font-size: 0.72rem;
+  background: rgba(217, 119, 6, 0.16); color: var(--a-amber);
+}
+.a-chip.is-active .chip-badge { background: rgba(255,255,255,0.25); color: #fff; }
+
+/* ---------- Source tags on appointment rows ---------- */
+.src-tag {
+  display: inline-block; margin-left: 0.4rem; padding: 0.1rem 0.5rem;
+  border-radius: 999px; font-size: 0.64rem; font-weight: 700; vertical-align: middle;
+  letter-spacing: 0.03em;
+}
+.src-web { background: rgba(91, 143, 176, 0.16); color: var(--a-blue); }
+.src-walk { background: rgba(169, 113, 66, 0.16); color: var(--a-gold); }
+
+/* ---------- Money colours ---------- */
+.money-in { color: var(--a-green); }
+.money-owed { color: var(--a-amber); }
+
+/* ---------- Simple forms ---------- */
+.panel--form { max-width: 720px; }
+.form-title { font-family: var(--a-display); font-size: 1.35rem; margin-bottom: 0.35rem; }
+.form-help { color: var(--a-ink-soft); font-size: 0.9rem; margin-bottom: 1.4rem; line-height: 1.55; }
+.form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.1rem; margin-bottom: 1.3rem; }
+.a-btn--lg { padding: 0.85rem 1.6rem; font-size: 0.95rem; border-radius: 12px; }
+.stat-cards--3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* ---------- Buttons: green (confirm) + soft red (reject) ---------- */
+.a-btn--green { background: var(--a-green); color: #fff; box-shadow: 0 8px 20px -8px rgba(46, 158, 107, 0.5); }
+.a-btn--green:hover { transform: translateY(-2px); }
+.a-btn--soft-red { background: rgba(192, 57, 75, 0.1); color: var(--a-red); border: 1px solid rgba(192, 57, 75, 0.25); }
+.a-btn--soft-red:hover { background: var(--a-red); color: #fff; }
+.drawer-actions--decide { grid-template-columns: 1fr 1fr; margin-top: 1rem; }
+.row-actions { display: flex; gap: 0.4rem; justify-content: flex-end; }
+
+/* ---------- Drawer "change status by hand" ---------- */
+.drawer-more { margin-top: 1.1rem; }
+.drawer-more summary {
+  cursor: pointer; font-size: 0.82rem; font-weight: 700; color: var(--a-ink-soft);
+  padding: 0.3rem 0; list-style: none;
+}
+.drawer-more summary::-webkit-details-marker { display: none; }
+.drawer-more summary::before { content: '⚙  '; }
+
+/* ---------- Reports note ---------- */
+.panel--soft { background: linear-gradient(135deg, rgba(169,113,66,0.08), rgba(200,155,106,0.05)); }
+.report-note { font-size: 0.98rem; line-height: 1.7; color: var(--a-ink); }
+.report-note strong { color: var(--a-gold); }
+
+/* ---------- Staff cards ---------- */
+.staff-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.staff-card {
+  padding: 1.2rem; border: 1px solid var(--a-border); border-radius: 16px;
+  background: var(--a-surface); display: flex; flex-direction: column; gap: 0.9rem;
+}
+.staff-top { display: flex; align-items: center; gap: 0.8rem; }
+.staff-top .client-avatar { width: 46px; height: 46px; font-size: 1rem; }
+.staff-name { font-weight: 800; font-size: 1.02rem; }
+.staff-role { font-size: 0.8rem; color: var(--a-gold); font-weight: 700; }
+.staff-meta { font-size: 0.83rem; color: var(--a-ink-soft); line-height: 1.5; }
+.staff-stats { display: flex; gap: 1.4rem; padding: 0.7rem 0; border-top: 1px solid var(--a-border); border-bottom: 1px solid var(--a-border); }
+.staff-stats > div { display: flex; flex-direction: column; }
+.staff-stats strong { font-size: 1.15rem; font-family: var(--a-display); color: var(--a-ink); }
+.staff-stats span { font-size: 0.72rem; color: var(--a-ink-soft); }
+.staff-msg { width: 100%; justify-content: center; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+  .form-2col { grid-template-columns: 1fr; }
+  .tile-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .tile { min-height: 128px; padding: 1.05rem; }
+  .tile-label { font-size: 0.95rem; }
+  .tile--primary { grid-column: 1 / -1; min-height: 96px; flex-direction: row; align-items: center; }
+  .tile--primary .tile-label { margin-top: 0; }
+  .drawer-actions--decide { grid-template-columns: 1fr; }
+  .chip-row--big .a-chip { flex: 1; justify-content: center; }
 }

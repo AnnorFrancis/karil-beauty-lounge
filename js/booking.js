@@ -160,14 +160,30 @@
       var progress = form.querySelector('.progress-steps');
       if (progress) progress.style.display = 'none';
       document.getElementById('form-success').style.display = 'block';
+      var name = (form.querySelector('[name="name"]') || {}).value || '';
+      var evType = (form.querySelector('[name="event-type"]') || {}).value || '';
+      var date = (form.querySelector('[name="event-date"]') || {}).value || '';
+      var phone = (form.querySelector('[name="phone"]') || {}).value || '';
+      var notes = (form.querySelector('[name="notes"]') || {}).value || '';
+
+      // Save the request so it shows up automatically in the salon admin.
+      // Frontend-only bridge via localStorage (same origin as the admin).
+      try {
+        var KEY = 'khb-web-bookings';
+        var list = JSON.parse(localStorage.getItem(KEY) || '[]');
+        list.push({
+          id: 'WEB-' + Date.now().toString().slice(-6),
+          name: name, phone: phone, service: evType || 'Appointment',
+          date: date, notes: notes, status: 'Pending', ts: Date.now()
+        });
+        localStorage.setItem(KEY, JSON.stringify(list));
+      } catch (err) {}
+
       var wa = document.getElementById('success-wa');
       if (wa) {
-        var name = (form.querySelector('[name="name"]') || {}).value || '';
-        var evType = (form.querySelector('[name="event-type"]') || {}).value || '';
-        var date = (form.querySelector('[name="event-date"]') || {}).value || '';
         wa.href = 'https://wa.me/233541834750?text=' + encodeURIComponent(
           'Hello Karil! I just requested an appointment. Name: ' + name +
-          ', Occasion: ' + evType + ', Date: ' + date + '. Looking forward to hearing from you!');
+          ', Service: ' + evType + ', Date: ' + date + '. Looking forward to hearing from you!');
       }
     });
 

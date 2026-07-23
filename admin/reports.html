@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appointments — Karil Admin</title>
+  <title>Reports — Karil Admin</title>
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../css/admin.css">
   <script>try{var t=localStorage.getItem('khb-admin-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 </head>
-<body class="admin" data-page="bookings">
+<body class="admin" data-page="reports">
 
 <div class="admin-shell">
 
@@ -27,11 +27,11 @@
     <nav class="admin-nav" aria-label="Admin">
       <div class="admin-nav-label">Manage</div>
       <a href="./dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Dashboard</a>
-      <a href="./bookings.html" class="is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4m8-4v4M3 10h18" stroke-linecap="round"/></svg>Appointments</a>
+      <a href="./bookings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4m8-4v4M3 10h18" stroke-linecap="round"/></svg>Appointments</a>
       <a href="./walkin.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3h5a2 2 0 012 2v14a2 2 0 01-2 2h-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 8l4 4-4 4M14 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>Walk-In</a>
       <a href="./clients.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.2 3.4-5 6.5-5s5.7 1.8 6.5 5" stroke-linecap="round"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 15c2.6.2 4.4 1.7 5 4.5" stroke-linecap="round"/></svg>Customers</a>
       <a href="./payments.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01" stroke-linecap="round"/></svg>Payments</a>
-      <a href="./reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4H6a2 2 0 00-2 2v13a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-3"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M8 12h8M8 16h5" stroke-linecap="round"/></svg>Reports</a>
+      <a href="./reports.html" class="is-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4H6a2 2 0 00-2 2v13a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-3"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M8 12h8M8 16h5" stroke-linecap="round"/></svg>Reports</a>
       <a href="./staff.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2.5"/><circle cx="12" cy="9" r="2.6"/><path d="M7.5 17c0-2.2 2-3.4 4.5-3.4s4.5 1.2 4.5 3.4" stroke-linecap="round"/></svg>Staff</a>
     </nav>
     <div class="admin-sidebar-foot">
@@ -51,39 +51,32 @@
     <header class="admin-topbar">
       <button class="sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg></button>
       <div class="topbar-title">
-        <h1>Appointments</h1>
-        <p id="bookings-count">—</p>
+        <h1>Reports</h1>
+        <p id="rep-sub">Simple totals — no charts, just the numbers</p>
       </div>
       <div class="topbar-spacer"></div>
-      <button class="a-btn a-btn--gold" id="add-booking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>New Appointment</button>
+      
       <div class="topbar-avatar">K</div>
     </header>
 
     <main class="admin-content">
 
-      <div class="panel">
-        <div class="chip-row" id="bk-chips">
-          <button class="a-chip is-active" data-chip="all">All</button>
-          <button class="a-chip" data-chip="today">Today</button>
-          <button class="a-chip" data-chip="toconfirm">To confirm <span class="chip-badge" id="chip-confirm">0</span></button>
-          <button class="a-chip" data-chip="upcoming">Upcoming</button>
-        </div>
-        <div class="filter-row" style="margin-top:0.9rem;">
-          <div class="grow"><input class="a-input" id="bk-search" type="search" placeholder="Search a client name or phone…" aria-label="Search appointments"></div>
-          <select class="a-select" id="bk-type" aria-label="Filter by service" style="width:170px;">
-            <option value="all">All services</option><option>Braids</option><option>Wigs</option><option>Nails</option><option>Lashes</option><option>Brows</option><option>Make-Up</option><option>Facial</option>
-          </select>
-        </div>
+      <div class="chip-row chip-row--big" id="rep-chips">
+        <button class="a-chip is-active" data-period="week">This Week</button>
+        <button class="a-chip" data-period="month">This Month</button>
+        <button class="a-chip" data-period="year">This Year</button>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-label">Money earned</span></div><div class="stat-card-value money-in" id="rep-earned">GHS 0</div></div>
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-label">Appointments done</span></div><div class="stat-card-value" id="rep-appts">0</div></div>
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-label">New customers</span></div><div class="stat-card-value" id="rep-new">0</div></div>
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-label">Busiest day</span></div><div class="stat-card-value" id="rep-busy">—</div></div>
       </div>
       <div class="panel">
-        <div class="table-wrap">
-          <table class="a-table">
-            <thead><tr><th>Client</th><th>Service</th><th>Date</th><th>Stylist</th><th>Price</th><th>Status</th></tr></thead>
-            <tbody id="bookings-body"></tbody>
-          </table>
-        </div>
-        <p class="panel-sub" style="margin-top:0.8rem;">Tap any appointment to confirm, reject, send a receipt or a reminder.</p>
+        <div class="panel-head"><div><div class="panel-title">Which services made the money</div><div class="panel-sub" id="rep-range">—</div></div></div>
+        <div class="table-wrap"><table class="a-table"><thead><tr><th>Service</th><th>Appointments</th><th>Money</th></tr></thead><tbody id="rep-breakdown"></tbody></table></div>
       </div>
+      <div class="panel panel--soft"><p class="report-note" id="rep-note"></p></div>
 
     </main>
   </div>
