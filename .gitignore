@@ -12,3 +12,6 @@ desktop.ini
 # Local tooling
 .claude/
 node_modules/
+
+# Unused source images (watermarked / collages / duplicates)
+images/_unused/
